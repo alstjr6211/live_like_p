@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
+import '../constant/colors.dart';
+
 class RouletteScreen extends StatefulWidget {
   const RouletteScreen({super.key});
 
@@ -10,7 +12,7 @@ class RouletteScreen extends StatefulWidget {
 
 class _RouletteScreenState extends State<RouletteScreen>
     with SingleTickerProviderStateMixin {
-  List<String> _items = ['Item 1', 'Item 2']; // 항목 리스트
+  List<String> _items = ['1', '2'];
   double _currentAngle = 0.0;
   double _targetAngle = 0.0;
   late AnimationController _controller;
@@ -37,14 +39,14 @@ class _RouletteScreenState extends State<RouletteScreen>
       if (status == AnimationStatus.completed) {
 
         double finalAngle = _currentAngle % (2 * pi);
-        print("Final Angle: $finalAngle radians");
+        print("Final Angle: $finalAngle radians"); //TODO dibug print
 
         double sweepAngle = 2 * pi / _items.length;
 
         int selectedItemIndex = (_items.length - (finalAngle / sweepAngle).floor() - 1) % _items.length;
-        print("Selected Item Index: $selectedItemIndex");
+        print("Selected Item Index: $selectedItemIndex"); // TODO dibug print
         _selectedItem = _items[selectedItemIndex];
-        print("Selected Item: $_selectedItem");
+        print("Selected Item: $_selectedItem"); // TODO dibug print
 
         //TODO need modify dialog
         showDialog(
@@ -82,7 +84,7 @@ class _RouletteScreenState extends State<RouletteScreen>
     final spinRounds = (10 + Random().nextDouble() * 30) * 2 * pi;
     final totalSpin = spinRounds + randomSpin;
     _targetAngle = _currentAngle + totalSpin;
-    print("Spinning to target angle: $_targetAngle radians");
+    print("Spinning to target angle: $_targetAngle radians"); //TODO debug print
 
     _animation = Tween<double>(begin: _currentAngle, end: _targetAngle).animate(
       CurvedAnimation(
@@ -154,7 +156,7 @@ class _RouletteScreenState extends State<RouletteScreen>
 
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
-              child: FloatingActionButton(
+              child: FloatingActionButton( // TODO edit additem & delete item button
                 onPressed: _addItem,
                 child: Icon(Icons.add),
               ),
@@ -174,7 +176,7 @@ class _RouletteScreenState extends State<RouletteScreen>
 
   void _addItem() {
     setState(() {
-      _items.add('Item ${_items.length + 1}');
+      _items.add('${_items.length + 1}');
     });
   }
   void _deleteItem() {
@@ -184,14 +186,14 @@ class _RouletteScreenState extends State<RouletteScreen>
       }
     });
   }
-
+  // TODO need modify editItem function
   void _editItem(int index) {
     showDialog(
       context: context,
       builder: (context) {
         final _textController = TextEditingController(text: _items[index]);
         return AlertDialog(
-          title: Text('Edit Item'),
+          title: Text('이름 변경'),
           content: TextField(
             controller: _textController,
           ),
@@ -224,12 +226,15 @@ class _RoulettePainter extends CustomPainter {
     final radius = min(size.width / 2, size.height / 2);
     final sweepAngle = 2 * pi / items.length;
     final colors = [
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.orange,
-      Colors.purple,
-      Colors.yellow,
+      rouletteColor_1,
+      rouletteColor_2,
+      rouletteColor_3,
+      rouletteColor_4,
+      rouletteColor_5,
+      rouletteColor_6,
+      rouletteColor_7,
+      rouletteColor_8,
+      rouletteColor_9,
     ];
 
     for (int i = 0; i < items.length; i++) {
@@ -248,7 +253,7 @@ class _RoulettePainter extends CustomPainter {
           text: items[i],
           style: TextStyle(
             fontSize: 16,
-            color: Colors.white,
+            color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
